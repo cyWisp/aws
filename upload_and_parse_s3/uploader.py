@@ -65,7 +65,7 @@ class S3Uploader:
     def list_buckets(self):
         if self.s3_resource:
             log.info('Listing any currently existing s3 buckets.')
-            log.info(f'{self.s3_resource.buckets} | {type(self.s3.buckets)}')
+            log.info(f'{self.s3_resource.buckets} | {type(self.s3_resource.buckets)}')
 
             for bucket in self.s3_resource.buckets.all():
                 log.info(bucket.name)
@@ -81,7 +81,7 @@ class S3Uploader:
                     self.s3_client.upload_file(
                         Filename=file,
                         Bucket=self.bucket,
-                        Key=file.split('/')[-1]
+                        Key=f'claims/{file.split("/")[-1]}'
                     )
 
                     log.info('Success!')
