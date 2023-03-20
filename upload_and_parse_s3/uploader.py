@@ -19,7 +19,7 @@ parser.add_argument('--upload-file-path', type=str, required=False,
                     default='upload', help='The default directory from which to upload files.')
 
 parser.add_argument('--bucket-name', type=str, required=False,
-                    default='rd-test-bucket777', help='The target AWS bucket to upload files to.')
+                    default='rd-claims-store', help='The target AWS bucket to upload files to.')
 
 cfg = parser.parse_known_args()[0]
 
