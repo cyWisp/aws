@@ -1,0 +1,1 @@
+"This is a lambda container - sys.version_info(major=3, minor=12, micro=7, releaselevel='final', serial=0)"
