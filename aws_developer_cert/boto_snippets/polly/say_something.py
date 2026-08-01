@@ -9,7 +9,9 @@ log = logging.getLogger(__name__)
 
 class PollyClient:
     def __init__(self):
-        self._client = boto3.client('polly')
+        self._client = boto3.client('polly',
+                                    region_name='us-east-1')
+
         self._audio: dict | None = None
 
     def __str__(self):
@@ -43,7 +45,7 @@ class PollyClient:
             )
 
             if self._audio:
-                self.write_audio_to_file(f'{os.getcwd()}\\output.mp3')
+                self.write_audio_to_file(f'{os.getcwd()}/output.mp3')
 
         except ClientError as e:
             log.error(e)

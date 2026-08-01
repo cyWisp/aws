@@ -1,0 +1,45 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: "Simple Blog Comments: API with Lambda and DynamoDB (Python)"
+
+Resources:
+  # DynamoDB Table for Blog Comments
+  BlogCommentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties: 
+      TableName: BlogComments
+      AttributeDefinitions: 
+        - AttributeName: id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Lambda Function: Add Comment to Blog Post
+  AddCommentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AddBlogComment
+      CodeUri: blog-comment-lambda/  # Point to the folder containing index.py
+      Handler: index.lambda_handler
+      Runtime: python3.9
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref BlogCommentsTable
+      Tracing: Active
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref BlogCommentsTable
+      Events:
+        ApiPostComment:
+          Type: Api
+          Properties:
+            Path: /add-comment
+            Method: POST
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/add-comment"
+
